@@ -3,10 +3,16 @@ package PongGame;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Main frame of pong game
+ */
 public class GameFrame extends JFrame {
 
     GamePanel panel;
 
+    /**
+     * Constructor which initializes frame properties
+     */
     GameFrame(){
         panel = new GamePanel();
         this.add(panel);
@@ -17,6 +23,5 @@ public class GameFrame extends JFrame {
         this.pack();
         this.setVisible(true);
         this.setLocationRelativeTo(null);
-
     }
 }

@@ -6,6 +6,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
+/**
+ * Panel which is displayed in a frame. Main content of a game, contains player paddles, ball and scoreboard
+ */
 public class GamePanel extends JPanel implements Runnable{
 
     static final int GAME_WIDTH = 1000;
@@ -24,6 +27,9 @@ public class GamePanel extends JPanel implements Runnable{
     Ball ball;
     Score score;
 
+    /**
+     * Constructor which initialized every component needed for a game
+     */
     GamePanel(){
         newPaddles();
         newBall();
@@ -36,16 +42,26 @@ public class GamePanel extends JPanel implements Runnable{
         gameThread.start();
     }
 
+    /**
+     * Creates new ball. Everytime a player scores - new ball is created.
+     */
     public void newBall(){
         //random = new Random(); //optional if we want to ball appear at random Y position, this variable should be passed in constructor below
         ball = new Ball((GAME_WIDTH / 2)-(BALL_DIAMETER / 2), (GAME_HEIGHT / 2) - (BALL_DIAMETER / 2), BALL_DIAMETER, BALL_DIAMETER);
     }
 
+    /**
+     * Creates paddles for players - everytime one of the players scores, new paddles are created which puts them in default position
+     */
     public void newPaddles(){
         p1 = new HumanPaddle(0,(GAME_HEIGHT / 2)-(PADDLE_HEIGHT / 2), PADDLE_WIDTH, PADDLE_HEIGHT, 1);
         p2 = new HumanPaddle((GAME_WIDTH-PADDLE_WIDTH),(GAME_HEIGHT / 2)-(PADDLE_HEIGHT / 2), PADDLE_WIDTH, PADDLE_HEIGHT, 2);
     }
 
+    /**
+     * Paints components in a frame
+     * @param g Graphics object
+     */
     public void paint(Graphics g){
         image = createImage(getWidth(),getHeight());
         graphics = image.getGraphics();
@@ -53,6 +69,10 @@ public class GamePanel extends JPanel implements Runnable{
         g.drawImage(image,0,0,this);
     }
 
+    /**
+     * Draw method of graphics API, draws components in a panel.
+     * @param g
+     */
     public void draw(Graphics g){
         p1.draw(g);
         p2.draw(g);
@@ -60,12 +80,19 @@ public class GamePanel extends JPanel implements Runnable{
         score.draw(g);
     }
 
+    /**
+     * Groups move methods of player paddles and ball
+     */
     public void move(){
         p1.move();
         p2.move();
         ball.move();
     }
 
+    /**
+     * Method which handles collision checks of paddles and ball. Paddles are stoping at the edges of the frame,
+     * and ball bounces whenever it touches up and bottoms edges of a frame or if it touches player paddle
+     */
     public void checkCollision(){
         //bounce ball off top & bottom edges
         if (ball.y <= 0){
@@ -130,6 +157,9 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
+    /**
+     * Implementation of Runnable interface method.
+     */
     public void run(){
         //game loop
         long lastTime = System.nanoTime();
@@ -149,6 +179,9 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
+    /**
+     * Public class which handles firing KeyEvent objects whenever keys are pressed or released. Keys are defined in {@link HumanPaddle} class.
+     */
     public class AL extends KeyAdapter{
 
         public void keyPressed(KeyEvent e){
